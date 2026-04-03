@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>The Curator | Build Your Digital Legacy</title>
+    
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+    
+    <!-- Tailwind CSS with Plugins -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- React and Routing CDNs -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/history@5/umd/history.development.js"></script>
+    <script src="https://unpkg.com/react-router@6.3.0/umd/react-router.development.js"></script>
+    <script src="https://unpkg.com/react-router-dom@6.3.0/umd/react-router-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#6c3400",
+                        "surface": "#f8f9ff",
+                        "primary-fixed": "#e2dfff",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb784",
+                        "inverse-primary": "#c3c0ff",
+                        "primary-container": "#493fdf",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#2f1bc8",
+                        "surface-dim": "#ccdbf3",
+                        "secondary-container": "#c9cffd",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-container-highest": "#d5e3fc",
+                        "on-surface-variant": "#454652",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "surface-bright": "#f8f9ff",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "surface-variant": "#d5e3fc",
+                        "on-tertiary-container": "#ffc7a2",
+                        "on-tertiary-fixed-variant": "#713700",
+                        "outline": "#757684",
+                        "on-primary-fixed": "#0f0069",
+                        "on-secondary-fixed-variant": "#3e446b",
+                        "surface-tint": "#4d44e3",
+                        "surface-container-low": "#eff4ff",
+                        "on-surface": "#0d1c2e",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#c5c5d4",
+                        "surface-container": "#e6eeff",
+                        "background": "#f8f9ff",
+                        "on-primary-container": "#d0cdff",
+                        "tertiary-container": "#8f4700",
+                        "secondary-fixed-dim": "#bec4f2",
+                        "secondary": "#565c84",
+                        "inverse-surface": "#233144",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-background": "#0d1c2e",
+                        "on-tertiary-fixed": "#301400",
+                        "secondary-fixed": "#dee0ff",
+                        "tertiary-fixed": "#ffdcc6",
+                        "on-secondary-container": "#51577f",
+                        "surface-container-high": "#dce9ff",
+                        "on-secondary-fixed": "#12183d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(248, 249, 255, 0.7);
+            backdrop-filter: blur(24px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c5c5d4;
+            border-radius: 10px;
+        }
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { createRoot } = ReactDOM;
+        const { MemoryRouter, Routes, Route, Link, useNavigate } = ReactRouterDOM;
+
+        // --- Shared Components ---
+
+        const Nav = ({ showLinks = true, variant = "default" }) => {
+            const navigate = useNavigate();
+            return (
+                <nav className="bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl docked full-width top-0 sticky z-50 shadow-sm shadow-indigo-900/5">
+                    <div className="flex justify-between items-center w-full px-8 h-16 max-w-screen-2xl mx-auto">
+                        <Link to="/" className="text-xl font-bold tracking-tighter text-indigo-700 dark:text-indigo-400 font-headline">
+                            The Curator
+                        </Link>
+                        {showLinks && (
+                            <div className="hidden md:flex items-center gap-8 font-manrope tracking-tight font-bold text-sm">
+                                <Link to="/templates" className="text-slate-500 dark:text-slate-400 hover:text-indigo-600 transition-colors duration-200">Explore</Link>
+                                <Link to="/templates" className="text-slate-500 dark:text-slate-400 hover:text-indigo-600 transition-colors duration-200">Templates</Link>
+                                <a className="text-slate-500 dark:text-slate-400 hover:text-indigo-600 transition-colors duration-200" href="#">Pricing</a>
+                            </div>
+                        )}
+                        <div className="flex items-center gap-4">
+                            <button className="hidden md:block text-slate-500 dark:text-slate-400 font-manrope font-bold text-sm hover:text-indigo-600 transition-colors duration-200 active:scale-95 transition-transform duration-150">
+                                Sign In
+                            </button>
+                            <button 
+                                onClick={() => navigate('/onboarding')}
+                                className="bg-primary hover:bg-primary-container text-on-primary px-6 py-2.5 rounded-full font-manrope font-bold text-sm transition-all duration-200 active:scale-95"
+                            >
+                                Create Portfolio
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+            );
+        };
+
+        const Footer = () => (
+            <footer className="w-full border-t border-slate-200/10 bg-slate-50 dark:bg-slate-950 py-12 px-8">
+                <div className="max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+                    <div className="flex flex-col items-center md:items-start gap-2">
+                        <div className="text-lg font-bold tracking-tighter text-indigo-700 dark:text-indigo-400 font-headline">The Curator</div>
+                        <p className="font-inter text-xs text-slate-500">© 2024 The Curator Portfolio. Designed for the Digital Architect.</p>
+                    </div>
+                    <div className="flex gap-8">
+                        <a className="font-inter text-xs text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors" href="#">Privacy</a>
+                        <a className="font-inter text-xs text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors" href="#">Terms</a>
+                        <a className="font-inter text-xs text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors" href="#">Support</a>
+                        <a className="font-inter text-xs text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors" href="#">Careers</a>
+                    </div>
+                    <div className="flex gap-4">
+                        <a className="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-slate-600 hover:bg-primary hover:text-white transition-all" href="#">
+                            <span className="material-symbols-outlined text-sm">language</span>
+                        </a>
+                        <a className="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-slate-600 hover:bg-primary hover:text-white transition-all" href="#">
+                            <span className="material-symbols-outlined text-sm">share</span>
+                        </a>
+                        <a className="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-slate-600 hover:bg-primary hover:text-white transition-all" href="#">
+                            <span className="material-symbols-outlined text-sm">mail</span>
+                        </a>
+                    </div>
+                </div>
+            </footer>
+        );
+
+        // --- Screen 1: Landing Page ---
+        const LandingPage = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="min-h-screen">
+                    <Nav />
+                    <main>
+                        <section className="relative pt-24 pb-32 overflow-hidden">
+                            <div className="max-w-screen-2xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                                <div className="lg:col-span-7 z-10">
+                                    <h1 className="font-headline text-5xl md:text-7xl font-extrabold tracking-tight text-on-surface leading-[1.1] mb-8">
+                                        Build Your Portfolio <br/>
+                                        <span className="text-primary italic">in Minutes</span>, <br/>
+                                        Not Days.
+                                    </h1>
+                                    <p className="text-lg md:text-xl text-on-surface-variant max-w-xl mb-10 leading-relaxed">
+                                        The Digital Architect's workspace. Create a high-end, editorial portfolio that reflects your unique creative vision without touching a single line of code.
+                                    </p>
+                                    <div className="flex flex-col sm:row gap-4">
+                                        <button 
+                                            onClick={() => navigate('/onboarding')}
+                                            className="bg-gradient-to-br from-primary to-primary-container text-on-primary px-8 py-4 rounded-full font-headline font-bold text-lg shadow-lg shadow-primary/20 hover:scale-105 transition-transform duration-200 active:scale-95"
+                                        >
+                                            Get Started for Free
+                                        </button>
+                                        <button 
+                                            onClick={() => navigate('/templates')}
+                                            className="border border-outline-variant/30 text-primary px-8 py-4 rounded-full font-headline font-bold text-lg hover:bg-surface-container-low transition-colors duration-200 active:scale-95"
+                                        >
+                                            View Showcase
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="lg:col-span-5 relative">
+                                    <div className="relative z-10 rounded-xl overflow-hidden shadow-2xl shadow-on-surface/10 border-[12px] border-surface-container-lowest">
+                                        <img className="w-full aspect-[4/3] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1Hwqe42dWlctuBeyp1HVKfyHBeXzoq3UrwyFmIRCmI1URqJQI6-JLBShgSJbDlSiuavdgyIGF6T4mthQsUQL7FegUMF9HWsA2DokbyTEQEg0mojZnl0bqqABTxgrSA4TGIXLQtHGxcKJTGJ4sQVHo6WQ6OLU4fB-KHbPcKWiNEXOwEtfWPVHaDzaF335Rl5bSCDbV5jXXhR05HWWrsGytMeUCTOdRTd8y33qqObYvBTuwrzGiy3FZbkOhki7V-GWO-exycISrgFA" alt="Editor interface"/>
+                                    </div>
+                                    <div className="absolute -top-12 -right-12 w-64 h-64 bg-primary-fixed rounded-full blur-3xl opacity-40 -z-10"></div>
+                                    <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-surface-container-highest rounded-full blur-2xl opacity-60 -z-10"></div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section className="py-32 bg-surface-container-low">
+                            <div className="max-w-screen-2xl mx-auto px-8">
+                                <div className="mb-20">
+                                    <h2 className="font-headline text-4xl font-extrabold tracking-tight mb-4">How it Works</h2>
+                                    <div className="h-1 w-20 bg-primary rounded-full"></div>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                    <div className="group bg-surface-container-lowest p-10 rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-indigo-900/5 border border-transparent hover:border-outline-variant/10">
+                                        <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300">
+                                            <span className="material-symbols-outlined text-primary text-3xl">edit</span>
+                                        </div>
+                                        <div className="text-primary font-headline font-bold mb-2">Step 01</div>
+                                        <h3 className="text-2xl font-headline font-bold mb-4 text-on-surface">Input Details</h3>
+                                        <p className="text-on-surface-variant leading-relaxed">Upload your best projects, craft your bio, and define your creative specialty. Our curator AI organizes your content semantically.</p>
+                                    </div>
+                                    <div className="group bg-surface-container-lowest p-10 rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-indigo-900/5 border border-transparent hover:border-outline-variant/10">
+                                        <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300">
+                                            <span className="material-symbols-outlined text-primary text-3xl">palette</span>
+                                        </div>
+                                        <div className="text-primary font-headline font-bold mb-2">Step 02</div>
+                                        <h3 className="text-2xl font-headline font-bold mb-4 text-on-surface">Pick a Template</h3>
+                                        <p className="text-on-surface-variant leading-relaxed">Select from our exclusive collection of editorial layouts. From brutalist grids to quiet gallery styles, find your perfect aesthetic.</p>
+                                    </div>
+                                    <div className="group bg-surface-container-lowest p-10 rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-indigo-900/5 border border-transparent hover:border-outline-variant/10">
+                                        <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300">
+                                            <span className="material-symbols-outlined text-primary text-3xl">rocket_launch</span>
+                                        </div>
+                                        <div className="text-primary font-headline font-bold mb-2">Step 03</div>
+                                        <h3 className="text-2xl font-headline font-bold mb-4 text-on-surface">Launch Your Site</h3>
+                                        <p className="text-on-surface-variant leading-relaxed">Connect your domain and hit publish. Your portfolio is optimized for speed, SEO, and mobile performance out of the box.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section className="py-24 px-8">
+                            <div className="max-w-screen-2xl mx-auto">
+                                <div className="bg-primary-container rounded-3xl p-12 md:p-24 text-center relative overflow-hidden">
+                                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary via-transparent to-transparent opacity-50"></div>
+                                    <div className="relative z-10">
+                                        <h2 className="font-headline text-4xl md:text-6xl font-extrabold text-on-primary mb-8 tracking-tighter">Ready to curate your story?</h2>
+                                        <p className="text-on-primary-container text-lg md:text-xl max-w-2xl mx-auto mb-12">Join over 50,000 creatives who have switched to a better way of showing their work.</p>
+                                        <button 
+                                            onClick={() => navigate('/onboarding')}
+                                            className="bg-white text-primary px-10 py-5 rounded-full font-headline font-bold text-xl shadow-2xl hover:scale-105 transition-transform duration-200"
+                                        >
+                                            Build Your Free Portfolio
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </main>
+                    <Footer />
+                </div>
+            );
+        };
+
+        // --- Screen 2: Onboarding ---
+        const OnboardingPage = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="bg-surface text-on-surface min-h-screen flex flex-col">
+                    <nav className="w-full h-16 flex items-center justify-between px-8 bg-surface/70 backdrop-blur-xl sticky top-0 z-50">
+                        <Link to="/" className="text-xl font-bold tracking-tighter text-primary">The Curator</Link>
+                        <div className="flex items-center gap-4">
+                            <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-widest">Step 02 / 04</span>
+                            <button onClick={() => navigate('/')} className="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center">
+                                <span className="material-symbols-outlined text-sm">close</span>
+                            </button>
+                        </div>
+                    </nav>
+                    <main className="flex-grow flex flex-col items-center pt-12 pb-24 px-4 sm:px-6">
+                        <div className="w-full max-w-2xl mb-16">
+                            <div className="flex justify-between relative">
+                                <div className="absolute top-1/2 left-0 w-full h-[2px] bg-surface-container-highest -translate-y-1/2 z-0"></div>
+                                <div className="absolute top-1/2 left-0 w-1/3 h-[2px] bg-primary -translate-y-1/2 z-0"></div>
+                                <div className="relative z-10 flex flex-col items-center gap-2">
+                                    <div className="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-lg shadow-primary/20">
+                                        <span className="material-symbols-outlined" style={{fontVariationSettings: "'FILL' 1"}}>check</span>
+                                    </div>
+                                    <span className="text-xs font-bold text-primary font-label">Basics</span>
+                                </div>
+                                <div className="relative z-10 flex flex-col items-center gap-2">
+                                    <div className="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center ring-4 ring-surface">
+                                        <span className="text-sm font-bold">2</span>
+                                    </div>
+                                    <span className="text-xs font-bold text-on-surface font-label">Projects</span>
+                                </div>
+                                <div className="relative z-10 flex flex-col items-center gap-2">
+                                    <div className="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center">
+                                        <span className="text-sm font-bold">3</span>
+                                    </div>
+                                    <span className="text-xs font-semibold text-on-surface-variant font-label">Skills</span>
+                                </div>
+                                <div className="relative z-10 flex flex-col items-center gap-2">
+                                    <div className="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center">
+                                        <span className="text-sm font-bold">4</span>
+                                    </div>
+                                    <span className="text-xs font-semibold text-on-surface-variant font-label">Contact</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="w-full max-w-3xl space-y-12">
+                            <header className="text-center space-y-4">
+                                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-on-surface">Curate Your Work.</h1>
+                                <p className="text-on-surface-variant text-lg max-w-lg mx-auto leading-relaxed">Select your best projects to showcase. These will form the visual spine of your editorial portfolio.</p>
+                            </header>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="group relative bg-surface-container-lowest rounded-xl p-5 shadow-sm border-b-2 border-transparent hover:border-primary transition-all duration-300">
+                                    <div className="aspect-video w-full rounded-full overflow-hidden bg-surface-container-high mb-4">
+                                        <img className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8uDhHClwScNFmUaY7v15qfSoWKoUNzJ4L8SSRYsgxPGPLyuiCBxvJqlqYKaowmpZuug47Dvp_RU_JBTESe_c1-80_u-ANcbXmjWUX1qSfi0aRI0roUXhXMIiY8l2CH9sC2dZYiWNvfiN5ulHoYx6DrKDsL7fnzSIOggZCu2IgMk7i1B8s1P8nn7epcn3NXcGsDxlg28WDKGavvYMMqzwp6hV8fUhtW8wSZdsRlY4GC2JJ8xxAckLl6XJzUriYiUbuq7yxDqLmYYo" alt="Project 1"/>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <h3 className="font-bold text-lg">Brutalist Perspectives</h3>
+                                        <p className="text-xs text-on-surface-variant line-clamp-2">A photographic series exploring the intersection of raw concrete and urban decay.</p>
+                                    </div>
+                                    <button className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/90 backdrop-blur shadow-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <span className="material-symbols-outlined text-sm text-error">delete</span>
+                                    </button>
+                                </div>
+                                <div className="group relative bg-surface-container-lowest rounded-xl p-5 shadow-sm border-b-2 border-transparent hover:border-primary transition-all duration-300">
+                                    <div className="aspect-video w-full rounded-full overflow-hidden bg-surface-container-high mb-4">
+                                        <img className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCck8q2usSrSf5gWwLKR-IHhFiJ5RcI3yjTnPdSz0Fe_u6I4X_PeeG0gEL7V2NVN7QasNjtibgP7QeOuhqylh1X19SgJRzi5dK_p0eA3gTcvcH30NIhx1F62FAoVpVMzQ5MAJ-y2DL90m-vUJCgdzx2n2rXgOWnXODb9-cjMIBpJxY5xaHP_Lor2g_88_H6HZ1gtH4_TbgMHE2i5j0I1S-3tRlSjC1hKoTFq2eUCsMcEf3kezFRKysQ4D40XEjc3QV5VwcdHh9KQpg" alt="Project 2"/>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <h3 className="font-bold text-lg">Vogue Archive Redesign</h3>
+                                        <p className="text-xs text-on-surface-variant line-clamp-2">Conceptual digital experience focusing on editorial high-fashion storytelling.</p>
+                                    </div>
+                                    <button className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/90 backdrop-blur shadow-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <span className="material-symbols-outlined text-sm text-error">delete</span>
+                                    </button>
+                                </div>
+                                <div className="md:col-span-2 bg-surface-container-low rounded-xl p-8 space-y-6">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                                            <span className="material-symbols-outlined text-on-primary text-sm">add</span>
+                                        </div>
+                                        <h2 className="text-xl font-bold">Add New Project</h2>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <div className="space-y-6">
+                                            <div className="relative">
+                                                <label className="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Project Title</label>
+                                                <input className="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary focus:ring-0 px-0 py-3 text-sm transition-all" placeholder="e.g. Neo-Tokyo Identity" type="text"/>
+                                            </div>
+                                            <div className="relative">
+                                                <label className="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Project Description</label>
+                                                <textarea className="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary focus:ring-0 px-0 py-3 text-sm transition-all resize-none" placeholder="Tell the story of this project..." rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-6">
+                                            <div className="h-full min-h-[160px] border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center p-6 text-center hover:bg-surface-container-high transition-colors group cursor-pointer">
+                                                <span className="material-symbols-outlined text-3xl text-outline mb-2 group-hover:text-primary transition-colors">cloud_upload</span>
+                                                <p className="text-xs font-semibold">Drop project cover or click to browse</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="pt-4 flex justify-end">
+                                        <button className="bg-on-surface text-surface px-6 py-2 rounded-full text-xs font-bold hover:bg-primary transition-all">Save Project</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                    <footer className="fixed bottom-0 left-0 w-full bg-surface/80 backdrop-blur-xl p-6 border-t border-outline-variant/10">
+                        <div className="max-w-3xl mx-auto flex justify-between items-center">
+                            <button onClick={() => navigate('/')} className="flex items-center gap-2 text-on-surface-variant font-bold text-sm hover:text-on-surface transition-colors">
+                                <span className="material-symbols-outlined text-lg">arrow_back</span> Back
+                            </button>
+                            <div className="flex items-center gap-6">
+                                <span className="hidden sm:block text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter">Draft saved 2m ago</span>
+                                <button 
+                                    onClick={() => navigate('/templates')}
+                                    className="bg-primary text-on-primary px-10 py-3 rounded-full text-sm font-bold shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
+                                >
+                                    Next: Choose Template
+                                </button>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        // --- Screen 3: Template Selector ---
+        const TemplateSelectorPage = () => {
+            const navigate = useNavigate();
+            const templates = [
+                { id: 'minimal', name: 'Minimalist', desc: 'Focus on Breath & Space', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDTIruoHZynX7MGLGQOb3NvbQiHWmetTWDs8_M5cDNwil_Y0YHDSMPxBcyhNcJ4z1IPl3aEPSU7ftVjW7De66W7RAgXyn-Nhqa4gFWXoRlGa7u3jNYHrcmy6ICUYAwlL-Gf3XgBJIjxUedOFwOvrAoWNtxtsLS5Tm1mtdG1BBGa3yE-uSW2LmjwSTyvhCBCqRa4807rvBrghqfJTegjbTJF4maASGf_pM7v2ajvXqYN_3WdekuaS1L9Zz1N73aaK60IlLJT2Vmr3RU', popular: true },
+                { id: 'bold', name: 'Bold & Colorful', desc: 'Loud Design for Loud Voices', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD6ES6k01sGFX9_LqtRGX_DK7j-EXdrveOV2Re2pQlQJTsW9NwUXw77cURE7rbypegfLyeuyemYN9f7FOMRncUBJR3mRTeeT2uqFfd9Lx8xLU9OEGbnxx00iGtRb9rQM_uHfpnpor52Rh1OJz_Ie4bTvXfM3jgi1Vi0nlWu6Rurw32T5rwxZ-ihLHekcwtei_mdW9Nt38xonMMihsSsVxdvUqf4JTb87r43D8TFnlzfgnNIwM55zB6WEYb6JIxgG6IDJJw-tu94zMQ' },
+                { id: 'grid', name: 'Grid Layout', desc: "The Collector's Archive", img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCv99XAbaWM603ZyIdc_CX7etZcwpDMngTuPCQ6qNtYr4FSS_NvQjG_CsVo80kw83lWhav0PL4Zf59gp2EqSTfjGRwTFhQ_gxfCoOKPdZqQr5FApzNFVoYBMXc6AjSTrC9QKA868LaqmUURM8es19cVRPXePv6vVDmZr7p9CeoWr7_QYhGOtkH4j2sLAfCNbS0mws4zLy3_hS1yFEStuVDhnrBbxdiuhwNr-mx1tw44U6h2iLzxdv8_wGiJ_eZSF6e29OEOELb5t8g' },
+                { id: 'editorial', name: 'Editorial Sidebar', desc: 'Classical Navigation Logic', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDsmHQcikCi_QB7ipgU0NJ1wDILgne5wIHsOp0Vuhe4U78Pl83tIHuJuvhVTakCbE0D6sD0K9pah4fsdqoEru9Ub-g5PLxnYwIg7WLplaj502aiMNenA9R017mrX3UENcSSd2wPKjEQexnKObijXCT5QV9RlkE1RE0eCMw84z73Bcr5njhEq6KSb7_MudoSJ53xoDkB9wrYAJKJEDNV_M3yBBTyvXR5Oqn3ZI0DfTJMwHZfNZgxWBJRIWW1GG80qkDSjW-kGj5gXPc' },
+                { id: 'dark', name: 'Midnight Studio', desc: 'Engineered for Dark Mode', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuApV7594uIkOzPUv9E_HYdP3fTeBA2ZpC8YefFTlfAO8BrUlvj-9jFKbyMB6gW6yScxgNZ3qyg1K0797x2fzIKb4uNG-zUJRzZqCkvAdaGvMUsve-KdlxjwEoafevCXFhxSDybbmOFCSbCyoMMKXCOsuE98Ss4vj58Z_oZobhOdi-cFy58RBB9aRwwTqk4zmWiCX6_mKZKyWwr9VaDK0L045Nr800UTR18JKe62GQUgSVvejtNa1e79PSdeRtU-vcO2_nL9dMo5Z2E', premium: true },
+                { id: 'gallery', name: 'The Gallery', desc: 'Linear Horizontal Storytelling', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBM9h5RZHTfjugUgO5wpjhe4mWw55Ap0bgeqYYohZ141zE8kQeH8JW5IzllPKA3xBqd58NoRaRQyxEkze2uvSSzJPCT3xenaFslFFP_uyXl0UQrH_Q8kcjygFJVi8f7Iu0-kdqiWLUzPTvewmaLa4ZRLzzhR_Vh7H-zGLRzR9vfQhQY4PYI8KSc3oak7gB7gWYw4YMAmp0JCY-FsF2wxVBF0T5lImJ1phzs2AXwGQMrCguVAXGAOOqGAhmueMfw36AwKbzrUsIVhKQ' },
+            ];
+
+            return (
+                <div className="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-primary min-h-screen">
+                    <Nav />
+                    <div className="flex min-h-[calc(100vh-64px)]">
+                        <aside className="hidden md:flex h-[calc(100vh-64px)] w-64 sticky top-16 left-0 z-40 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-2xl flex-col p-6 gap-6">
+                            <div>
+                                <h2 className="text-lg font-black text-slate-900 dark:text-white mb-1">Templates</h2>
+                                <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 mb-6">Discovery Engine</p>
+                                <div className="relative group mb-8">
+                                    <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+                                    <input className="w-full bg-surface-container-highest border-none rounded-lg pl-10 pr-4 py-2 text-xs focus:ring-2 focus:ring-primary/20" placeholder="Search styles..." type="text"/>
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <button className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-slate-900 text-indigo-700 dark:text-indigo-400 shadow-sm font-inter text-xs font-semibold text-left transition-transform">
+                                        <span className="material-symbols-outlined text-lg" style={{fontVariationSettings: "'FILL' 1"}}>dashboard</span> All Layouts
+                                    </button>
+                                    <button className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 font-inter text-xs font-semibold text-left transition-all">
+                                        <span className="material-symbols-outlined text-lg">palette</span> Creative
+                                    </button>
+                                    <button className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 font-inter text-xs font-semibold text-left transition-all">
+                                        <span className="material-symbols-outlined text-lg">architecture</span> Architectural
+                                    </button>
+                                </div>
+                            </div>
+                        </aside>
+                        <main className="flex-1 bg-surface-container-low p-8 md:p-12">
+                            <header className="mb-12 max-w-4xl">
+                                <h1 className="font-headline text-5xl md:text-6xl font-extrabold tracking-tighter text-on-surface mb-4">
+                                    Architect Your <span className="text-primary italic">Digital Legacy.</span>
+                                </h1>
+                                <p className="font-body text-on-surface-variant text-lg leading-relaxed max-w-2xl">
+                                    Select a foundation that mirrors your creative philosophy. Our editorial layouts are engineered for visual impact and effortless navigation.
+                                </p>
+                            </header>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {templates.map((t, i) => (
+                                    <div key={t.id} className={`group relative bg-surface-container-lowest rounded-xl overflow-hidden hover:scale-[1.02] transition-all duration-300 hover:shadow-2xl outline outline-1 outline-outline-variant/10 ${(i === 1 || i === 4) ? 'lg:translate-y-8' : ''}`}>
+                                        <div className="aspect-[4/3] bg-surface-container-high overflow-hidden">
+                                            <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src={t.img} alt={t.name}/>
+                                        </div>
+                                        <div className="p-6">
+                                            <div className="flex justify-between items-start mb-4">
+                                                <div>
+                                                    <h3 className="font-headline text-xl font-bold text-on-surface">{t.name}</h3>
+                                                    <p className="text-xs text-on-surface-variant font-medium">{t.desc}</p>
+                                                </div>
+                                                {t.popular && <span className="text-[10px] px-2 py-1 bg-primary-fixed text-on-primary-fixed-variant rounded-full font-bold">POPULAR</span>}
+                                                {t.premium && <span className="text-[10px] px-2 py-1 bg-indigo-500/20 text-indigo-300 rounded-full font-bold">PREMIUM</span>}
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <button className="flex-1 border border-outline-variant/20 py-2.5 rounded-full text-xs font-bold hover:bg-surface-container transition-colors">Preview</button>
+                                                <button 
+                                                    onClick={() => navigate('/editor')}
+                                                    className="flex-1 bg-primary text-white py-2.5 rounded-full text-xs font-bold hover:bg-primary-container transition-colors"
+                                                >
+                                                    Select
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </main>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- Screen 4: Editor ---
+        const EditorPage = () => {
+            const navigate = useNavigate();
+            return (
+                <div className="bg-surface text-on-surface font-body overflow-hidden h-screen">
+                    <header className="bg-white/70 backdrop-blur-xl docked full-width top-0 sticky z-50 shadow-sm shadow-indigo-900/5 h-16 flex items-center">
+                        <div className="flex justify-between items-center w-full px-8 max-w-screen-2xl mx-auto">
+                            <div className="flex items-center gap-8">
+                                <Link to="/" className="text-xl font-bold tracking-tighter text-indigo-700">The Curator</Link>
+                                <nav className="hidden md:flex items-center gap-6">
+                                    <Link className="text-indigo-700 border-b-2 border-indigo-700 pb-1 font-manrope tracking-tight font-bold text-sm" to="/templates">Templates</Link>
+                                    <a className="text-slate-500 hover:text-indigo-600 transition-colors duration-200 font-manrope tracking-tight font-bold text-sm" href="#">Pricing</a>
+                                </nav>
+                            </div>
+                            <div className="flex items-center bg-surface-container-low p-1 rounded-full border border-outline-variant/10">
+                                <button className="p-2 rounded-full bg-white shadow-sm text-primary"><span className="material-symbols-outlined text-[20px]">desktop_windows</span></button>
+                                <button className="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high"><span className="material-symbols-outlined text-[20px]">tablet_mac</span></button>
+                                <button className="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high"><span className="material-symbols-outlined text-[20px]">smartphone</span></button>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <button className="text-indigo-700 font-bold text-sm px-4 py-2 hover:text-indigo-600 transition-transform active:scale-95">Sign In</button>
+                                <button className="bg-gradient-to-br from-primary to-primary-container text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-lg shadow-primary/20 active:scale-95 transition-transform">Publish Now</button>
+                            </div>
+                        </div>
+                    </header>
+                    <main className="flex h-[calc(100vh-64px)] overflow-hidden">
+                        <aside className="h-full w-80 flex-shrink-0 bg-slate-50/80 backdrop-blur-2xl flex flex-col p-4 gap-2 overflow-y-auto custom-scrollbar border-r border-outline-variant/10">
+                            <div className="px-4 py-6 border-b border-outline-variant/10 mb-2">
+                                <h2 className="text-lg font-black text-slate-900">Editor</h2>
+                                <p className="font-inter text-xs font-semibold text-slate-500 uppercase tracking-widest mt-1">Vogue Template</p>
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <button className="flex items-center gap-3 px-4 py-3 bg-white text-indigo-700 rounded-xl shadow-sm font-inter text-xs font-semibold"><span className="material-symbols-outlined" style={{fontVariationSettings: "'FILL' 1"}}>dashboard</span><span>Layout</span></button>
+                                <button className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-200/50 rounded-xl transition-all font-inter text-xs font-semibold"><span className="material-symbols-outlined">font_download</span><span>Typography</span></button>
+                                <button className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-200/50 rounded-xl transition-all font-inter text-xs font-semibold"><span className="material-symbols-outlined">palette</span><span>Colors</span></button>
+                                <button className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-200/50 rounded-xl transition-all font-inter text-xs font-semibold"><span className="material-symbols-outlined">edit</span><span>Content</span></button>
+                            </div>
+                            <div className="mt-8 px-2 space-y-8">
+                                <section>
+                                    <h3 className="text-[10px] font-bold text-on-surface-variant uppercase tracking-[0.2em] mb-4">Color Theme</h3>
+                                    <div className="grid grid-cols-4 gap-2">
+                                        <button className="aspect-square rounded-full border-2 border-primary p-0.5"><div className="w-full h-full rounded-full bg-primary"></div></button>
+                                        <button className="aspect-square rounded-full border border-outline-variant/30 p-0.5"><div className="w-full h-full rounded-full bg-slate-900"></div></button>
+                                        <button className="aspect-square rounded-full border border-outline-variant/30 p-0.5"><div className="w-full h-full rounded-full bg-rose-500"></div></button>
+                                        <button className="aspect-square rounded-full border border-outline-variant/30 p-0.5"><div className="w-full h-full rounded-full bg-emerald-600"></div></button>
+                                    </div>
+                                </section>
+                                <section>
+                                    <h3 className="text-[10px] font-bold text-on-surface-variant uppercase tracking-[0.2em] mb-4">Content Blocks</h3>
+                                    <div className="space-y-3">
+                                        <div className="bg-surface-container-highest/40 p-4 rounded-xl group hover:bg-white transition-all">
+                                            <label className="block text-[10px] font-bold text-slate-400 uppercase mb-2">Headline</label>
+                                            <input className="w-full bg-transparent border-none p-0 text-sm font-semibold focus:ring-0 text-on-surface" defaultValue="Modern Architect" type="text"/>
+                                        </div>
+                                        <div className="bg-surface-container-highest/40 p-4 rounded-xl group hover:bg-white transition-all">
+                                            <label className="block text-[10px] font-bold text-slate-400 uppercase mb-2">Subtitle</label>
+                                            <input className="w-full bg-transparent border-none p-0 text-sm font-semibold focus:ring-0 text-on-surface" defaultValue="Designing Tomorrow's Spaces" type="text"/>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                            <div className="mt-auto pt-4 border-t border-outline-variant/10">
+                                <button className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-indigo-50 w-full transition-all font-inter text-xs font-semibold"><span className="material-symbols-outlined">help</span><span>Help</span></button>
+                                <button className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-indigo-50 w-full transition-all font-inter text-xs font-semibold"><span className="material-symbols-outlined">settings</span><span>Settings</span></button>
+                            </div>
+                        </aside>
+                        <section className="flex-1 bg-surface-dim relative overflow-hidden flex flex-col items-center justify-center p-12">
+                            <div className="w-full max-w-5xl h-full bg-surface-container-lowest rounded-2xl shadow-2xl shadow-indigo-900/20 border border-outline-variant/20 overflow-hidden flex flex-col relative group">
+                                <div className="h-10 bg-surface-container-low flex items-center px-4 gap-2">
+                                    <div className="flex gap-1.5">
+                                        <div className="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
+                                        <div className="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
+                                        <div className="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
+                                    </div>
+                                    <div className="mx-auto bg-white/80 px-4 py-1 rounded text-[10px] text-slate-400 font-medium border border-outline-variant/10 w-64 text-center">portfolio-vogue-2024.thecurator.com</div>
+                                </div>
+                                <div className="flex-1 overflow-y-auto bg-white scroll-smooth custom-scrollbar">
+                                    <section className="relative h-[500px] flex items-center px-12 overflow-hidden">
+                                        <div className="absolute inset-0 z-0">
+                                            <img className="w-full h-full object-cover opacity-10 grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnaIoe-eCpSKiY19f046c366dnZWR4Dp3s7PJObXpN0konK-rPb3t2P3vFL8mkPtM3qoK5jK3bhoK3xgW9xQg0swdT9jW2miAxp1uhAXK8bFZzEqY5qg6Me-cMCT9_6URpC_1l91ZD_a1TKptbyfdw8D-SpezRRsIjF5oPMllYjvud7XHTl8Cb-ccHZ3-A6yhg60POBNUcgXJ753M7k1yyRDTjIu010zZz89xgDPL-DDuqfRieLqQ6cOaFuRG-b-utzKcNqsjYwh4" alt="Hero Bg"/>
+                                            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent"></div>
+                                        </div>
+                                        <div className="relative z-10 max-w-2xl">
+                                            <span className="text-primary font-bold text-xs uppercase tracking-[0.4em] block mb-4">Architecture & Design</span>
+                                            <h1 className="text-6xl font-headline font-extrabold tracking-tighter text-on-surface leading-[1.1] mb-6">Defining the <br/><span className="text-primary italic">Digital Horizon.</span></h1>
+                                            <p className="text-slate-500 text-lg font-light max-w-lg mb-8 leading-relaxed">A curated selection of architectural marvels and structural explorations by Julian Vance.</p>
+                                            <div className="flex gap-4">
+                                                <button className="px-8 py-3 bg-primary text-white font-bold rounded-full text-sm">View Projects</button>
+                                                <button className="px-8 py-3 border border-outline-variant text-on-surface font-bold rounded-full text-sm">Biography</button>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section className="px-12 py-20 bg-surface-container-low">
+                                        <div className="grid grid-cols-12 gap-4 h-[600px]">
+                                            <div className="col-span-8 rounded-3xl overflow-hidden relative group cursor-pointer">
+                                                <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmS5exQbMyW8DXo5XPkRg9-oXQzL0p3F3xv97arEIZiJAQyUh0oHjn0XapF7rbnVGGVPHfdt1u1lneu4OgxmBO8CF7cCAdVwIukCy-jxAZQrNQDyLclTMpfvhTno59nNTvfHRnCzB3LsBV2IJtv7tyJNB_i2UAkAZ4JzddubZ-H5xoT3u-yJwlM1EpfsWqYmL7N7_6F2TPm9V3EJhMuNlsNo2EPTJPb9pAIE_-rpD3q_ApUVGcdpbnBPdOsL5BVtIGyCdgcPSBwb4" alt="Portfolio 1"/>
+                                            </div>
+                                            <div className="col-span-4 rounded-3xl overflow-hidden relative group cursor-pointer">
+                                                <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWR5HexD-wpXDCIPWCcKZuX62JvK9u7UlqdiHA92K_gzKDSHvuv9vRRTf0LiHmV-_VYKooqAaaOypnj9JGPjVE6GD2cSwtklHHqOoI3iXefd-G4jDtnv12M9nkuxfH97Oc1JO6dUguqghpzkeEDG4SBgn-pYg_xcMdlUEBwMkk17d_H2zUy7fVumCsJsoUACsT_qcCwdB7Pqstf_fsoJ8-DniHYdPRl2sVFiENsdaqQpwR1dHkGacvS4UV3hpJ5ZNL1Phd4VNaZmc" alt="Portfolio 2"/>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-on-surface/90 backdrop-blur-xl text-white px-6 py-3 rounded-full flex items-center gap-6 shadow-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <button className="flex items-center gap-2 text-xs font-bold hover:text-primary-fixed"><span className="material-symbols-outlined text-[18px]">add_circle</span> Add Section</button>
+                                    <div className="w-[1px] h-4 bg-white/20"></div>
+                                    <button className="flex items-center gap-2 text-xs font-bold hover:text-primary-fixed"><span className="material-symbols-outlined text-[18px]">layers</span> Reorder</button>
+                                </div>
+                            </div>
+                        </section>
+                    </main>
+                </div>
+            );
+        };
+
+        // --- App Component with Router ---
+        const App = () => {
+            return (
+                <MemoryRouter initialEntries={["/"]}>
+                    <Routes>
+                        <Route path="/" element={<LandingPage />} />
+                        <Route path="/onboarding" element={<OnboardingPage />} />
+                        <Route path="/templates" element={<TemplateSelectorPage />} />
+                        <Route path="/editor" element={<EditorPage />} />
+                    </Routes>
+                </MemoryRouter>
+            );
+        };
+
+        const root = createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

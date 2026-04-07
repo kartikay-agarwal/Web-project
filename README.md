@@ -1,170 +1,70 @@
-# Personal Portfolio Builder
+# Getting Started with Create React App
 
-Personal Portfolio Builder is a frontend-only ReactJS application that lets users enter personal details, skills, projects, and contact information to generate a live portfolio webpage instantly. The project is designed in a Create React App style structure and focuses on beginner-friendly React concepts such as components, props, state, hooks, event handling, conditional rendering, and reusable UI blocks.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Features
+## Available Scripts
 
-- Live portfolio preview that updates as the form changes
-- Personal information form with validation
-- Dynamic skill management using array state
-- Dynamic project management using array state
-- Reusable `SkillCard`, `ProjectCard`, and `Navbar` components
-- Dark mode toggle
-- Portfolio template switcher with `Professional` and `Minimal` styles
-- Local storage saving
-- Smooth scrolling navigation
-- Collapsible form sections
-- Project filtering by category
-- Responsive modern layout with Flexbox and Grid
+In the project directory, you can run:
 
-## Technology Stack
+### `npm start`
 
-- ReactJS
-- HTML5
-- CSS3
-- JavaScript (ES6)
-- Create React App compatible setup using `react-scripts`
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-## Project Structure
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-```text
-portfolio-builder/
-  public/
-    index.html
-  src/
-    App.js
-    index.js
-    components/
-      About.js
-      Contact.js
-      Form.js
-      Navbar.js
-      PortfolioPreview.js
-      ProjectCard.js
-      Projects.js
-      SkillCard.js
-      Skills.js
-    styles/
-      App.css
-      Form.css
-      Portfolio.css
-  package.json
-  README.md
-```
+### `npm test`
 
-## Setup Steps
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-1. Open the project folder in a terminal.
-2. Install dependencies:
+### `npm run build`
 
-```bash
-npm install
-```
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-3. Start the development server:
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-```bash
-npm start
-```
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-4. Open `http://localhost:3000` in the browser.
+### `npm run eject`
 
-## How the App Works
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-### `App.js`
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-- Holds the main `portfolio` state using `useState`
-- Stores form draft values for new skills and new projects
-- Passes data and event handlers to child components using props
-- Saves data to local storage with `useEffect`
-- Controls dark mode, template switching, collapsible sections, and project filtering
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-### `Form.js`
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-- Displays the left-side form panel
-- Uses `onChange`, `onClick`, and `onSubmit`
-- Adds and removes skills dynamically
-- Adds and removes projects dynamically
-- Shows validation messages when important fields are missing
+## Learn More
 
-### `PortfolioPreview.js`
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-- Displays the right-side live portfolio preview
-- Receives current portfolio data as props
-- Renders the reusable preview sections
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Reusable Components
+### Code Splitting
 
-- `Navbar.js`: renders portfolio navigation links
-- `SkillCard.js`: displays each skill in a card style
-- `ProjectCard.js`: displays each project with title, description, technologies, and links
-- `About.js`, `Skills.js`, `Projects.js`, and `Contact.js`: render preview sections with clean separation of concerns
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-## React Concepts Demonstrated
+### Analyzing the Bundle Size
 
-- Functional components
-- `useState`
-- `useEffect`
-- Props passing
-- Component reuse
-- Array `map()`
-- Array `filter()`
-- Conditional rendering
-- Event handlers
-- Form validation
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-## Deployment Instructions
+### Making a Progressive Web App
 
-### Create a GitHub Repository
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-1. Create a new repository on GitHub named `portfolio-builder`.
-2. Initialize git locally if needed:
+### Advanced Configuration
 
-```bash
-git init
-git add .
-git commit -m "Initial portfolio builder project"
-```
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-3. Connect the local project to GitHub:
+### Deployment
 
-```bash
-git remote add origin https://github.com/your-github-username/portfolio-builder.git
-git branch -M main
-git push -u origin main
-```
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### Deploy to GitHub Pages
+### `npm run build` fails to minify
 
-1. Update the `homepage` field in `package.json`:
-
-```json
-"homepage": "https://your-github-username.github.io/portfolio-builder"
-```
-
-2. Install the GitHub Pages package:
-
-```bash
-npm install --save-dev gh-pages
-```
-
-3. Add deploy scripts to `package.json`:
-
-```json
-"predeploy": "npm run build",
-"deploy": "gh-pages -d build"
-```
-
-4. Run the deployment command:
-
-```bash
-npm run deploy
-```
-
-5. In the GitHub repository settings, confirm that GitHub Pages is serving from the deployed branch.
-
-## Notes
-
-- This project uses no backend, no database, and no external UI framework.
-- All styling is written using plain CSS.
-- The app is structured to stay readable for beginners while following modular React practices.
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
